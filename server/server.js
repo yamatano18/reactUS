@@ -1,3 +1,4 @@
+
 import express from 'express';
 import corsPrefetch from 'cors-prefetch-middleware';
 import imagesUpload from 'images-upload-middleware';
@@ -24,23 +25,39 @@ app.post('/images', imagesUpload(
     './static/' + IMAGES,
     HTTP_SERVER_PORT_IMAGES
 ));
+
 //routes
-app.get('/api/cities', function (req, res) {
+app.get('/cities', function (req, res) {
     db.collection('cities').find().toArray()
         .then(cities => res.json(cities))
         .catch(error => {
-            console.log(error);
-            res.status(500).json({message: 'Internal Server Error : ${error}'});
+            res.status(500).json({message: `Internal Server Error : ${error}`});
         });
-});
-
-app.get('/api/cities/:id', (req, res) => {
-    console.log("REQ ", req.params.id);
-    db.collection('cities').findOne({"_id": ObjectID(req.params.id)})
-        .then(city => res.json(city))
+})
+app.get('/cities/:id', function (req, res) {
+    db.collection('cities').findOne({'_id':ObjectID(req.params.id)}, function(error, result) {
+        if (error)
+            res.status(400).send(error)
+        if (result.length == 0){
+            res.status(404)
+        }
+        res.send(result);
+    })
+})
+app.get('/activities', function (req, res) {
+    db.collection('activities').find().toArray()
+        .then(cities => res.json(cities))
         .catch(error => {
-            console.log(error);
-            res.status(404).json({message: 'No such city with id : ${req.params.id}'});
+            res.status(500).json({message: `Internal Server Error : ${error}`});
         });
-});
-
+})
+app.get('/activity/:id', function (req, res) {
+    db.collection('activities').findOne({'_id':ObjectID(req.params.id)}, function(error, result) {
+        if (error)
+            res.status(500).json({message: 'Internal Server Error : ${error}'});
+        else if (result)
+            res.send(result);
+        else
+            res.status(404);
+    });
+})

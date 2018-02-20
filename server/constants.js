@@ -1,4 +1,4 @@
-const SERVER= "localhost";
+const SERVER = "localhost";
 const PORT = 9090;
 const HTTP_SERVER_PORT = 'http://' + SERVER + ':' + PORT;
 const IMAGES = "images";
