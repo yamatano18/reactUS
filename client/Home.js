@@ -16,7 +16,7 @@ class CityLaconic extends React.Component {
             </div>
         )
     }
-}
+};
 
 export default class Home extends React.Component {
     constructor(props) {

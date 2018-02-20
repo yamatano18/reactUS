@@ -18,7 +18,7 @@ export default class City extends React.Component {
 
     loadData() {
 
-        fetch('/api/city/'+this.props.params.id)                       // Ask the route /cities to the server
+        fetch('/city/' + this.props.params.id)                       // Ask the route /cities to the server
             .then(res => res.json())                       // Retrieve the objects  in json
             .then(data => this.setState({city: data}))   // Modify the state accordingly
             .catch(err => console.log(err));               // Bad news: an error!
@@ -32,9 +32,9 @@ export default class City extends React.Component {
 
     render() {
         let city = this.state.city;
-        if(city == undefined){
-            return ( <div>loading</div>)
-        }else {
+        if (city == undefined) {
+            return (<div>loading</div>)
+        } else {
             return (
                 <div className='city'>
                     <img src={this.state.city.picture}/>
