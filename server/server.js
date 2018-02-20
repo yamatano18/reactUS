@@ -54,7 +54,7 @@ app.get('/activities', function (req, res) {
 app.get('/activity/:id', function (req, res) {
     db.collection('activities').findOne({'_id':ObjectID(req.params.id)}, function(error, result) {
         if (error)
-            res.status(500).json({message: `Internal Server Error : ${error}`});
+            res.status(400).json({message: `Internal Server Error : ${error}`});
         else if (result)
             res.send(result);
         else

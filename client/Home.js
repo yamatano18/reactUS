@@ -40,19 +40,17 @@ export default class Home extends React.Component {
     }
 
     render() {
-        const tab = this.state.cities.map(p => <CityLaconic cities={p}/>)
+        const mappedCities = this.state.cities.map(p => <CityLaconic cities={p}/>)
         return (
             <div>
                 <h1>My Cities... </h1>
-
-                {tab}
                 <p> You can find in this website many cities with beautiful places, events (festivals, concerts and so
                     on).
                     Please, join us, and you will have the possibilities to participate to this new social network.
                     <br/>
-
                     Enjoy!!
                 </p>
+                {mappedCities}
             </div>
         );
     }

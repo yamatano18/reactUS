@@ -10,9 +10,9 @@ ReactDOM.render(
     <div>
         <header>Navbar</header>
         <Router history={hashHistory}>
-            <Route path="/" component={Home}/>
-            <Route path="/cities/:id" component={City} />
-            <Route path="*" component={() => <p>Page Not Found</p>}/>
+            <Route path="/" component={Home} />
+            <Route path="/city/:id" component={City} />
+            <Route path="*" component={() => <p>Page Not Found</p>} />
         </Router>
         <footer>Footer</footer>
     </div>
