@@ -24,4 +24,23 @@ app.post('/images', imagesUpload(
     './static/' + IMAGES,
     HTTP_SERVER_PORT_IMAGES
 ));
+//routes
+app.get('/api/cities', function (req, res) {
+    db.collection('cities').find().toArray()
+        .then(cities => res.json(cities))
+        .catch(error => {
+            console.log(error);
+            res.status(500).json({message: 'Internal Server Error : ${error}'});
+        });
+});
+
+app.get('/api/cities/:id', (req, res) => {
+    console.log("REQ ", req.params.id);
+    db.collection('cities').findOne({"_id": ObjectID(req.params.id)})
+        .then(city => res.json(city))
+        .catch(error => {
+            console.log(error);
+            res.status(404).json({message: 'No such city with id : ${req.params.id}'});
+        });
+});
 
