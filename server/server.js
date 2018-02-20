@@ -33,31 +33,31 @@ app.get('/cities', function (req, res) {
         .catch(error => {
             res.status(500).json({message: `Internal Server Error : ${error}`});
         });
-})
-app.get('/cities/:id', function (req, res) {
+});
+app.get('/city/:id', function (req, res) {
     db.collection('cities').findOne({'_id':ObjectID(req.params.id)}, function(error, result) {
         if (error)
-            res.status(400).send(error)
-        if (result.length == 0){
-            res.status(404)
-        }
-        res.send(result);
+            res.status(400).json({message: `Internal Server Error : ${error}`});
+        else if (result)
+            res.send(result);
+        else
+            res.status(404);
     })
-})
+});
 app.get('/activities', function (req, res) {
     db.collection('activities').find().toArray()
         .then(cities => res.json(cities))
         .catch(error => {
             res.status(500).json({message: `Internal Server Error : ${error}`});
         });
-})
+});
 app.get('/activity/:id', function (req, res) {
     db.collection('activities').findOne({'_id':ObjectID(req.params.id)}, function(error, result) {
         if (error)
-            res.status(500).json({message: 'Internal Server Error : ${error}'});
+            res.status(400).json({message: `Internal Server Error : ${error}`});
         else if (result)
             res.send(result);
         else
             res.status(404);
     });
-})
+});
