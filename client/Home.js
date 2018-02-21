@@ -256,7 +256,6 @@ class FeedBack extends React.Component{
                     <h6 className="feedbackTitle">{this.props.name}</h6>
                     <p>{this.props.description}</p>
 
-
                 </div>
 
             </div>
