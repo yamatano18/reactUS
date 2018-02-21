@@ -30,7 +30,7 @@ app.post('/images', imagesUpload(
 app.get('/cities', function (req, res) {
     db.collection('cities').find().toArray()
         .then(cities => res.json(cities))
-        .catch(error => {
+        .catch(error => {r
             res.status(500).json({message: `Internal Server Error : ${error}`});
         });
 });

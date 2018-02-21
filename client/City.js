@@ -1,14 +1,21 @@
-import React from 'react';
+import React, { Component } from 'react';
 import {Link} from 'react-router';
+import GoogleMapReact from 'google-map-react'
+
+const AnyReactComponent = ({ text }) => <div>{ text }</div>;
 
 import ImagesUploader from 'react-images-uploader';
 import 'react-images-uploader/styles.css';
 import 'react-images-uploader/font.css';
+import Map from './Map.js';
+
+
 
 import {HTTP_SERVER_PORT_IMAGES} from '../server/constants'
 
 
 class Activity extends React.Component {
+
     render() {
         return (
             <div className='activityClass'>
@@ -27,6 +34,7 @@ export default class City extends React.Component {
             city: void 0
         }
     };
+
 
     loadData() {
 
@@ -47,16 +55,16 @@ export default class City extends React.Component {
         if (city == undefined) {
             return (<div>Loading data from DB</div>)
         } else {
+
             return (
                 <div className='city'>
                     <p>{this.state.city.name}</p>
                     <img src={this.state.city.picture}/>
                     <p>Description: {this.state.city.description}</p>
                     <p>Element _Id: {this.state.city._id}</p>
-                    <div><p>Coordinates (MAP TO DO):</p>
+                    <div className='map'>
                         <ul>
-                            <li>Long: {this.state.city.coordinates.long}</li>
-                            <li>Lat: {this.state.city.coordinates.lat}</li>
+                      <Map></Map>
                         </ul>
                     </div>
                     <div>
@@ -71,6 +79,7 @@ export default class City extends React.Component {
                     </div>
                 </div>
             )
+
         }
     }
 }
