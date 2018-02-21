@@ -11,9 +11,16 @@ import {HTTP_SERVER_PORT_IMAGES} from '../server/constants'
 export default class AddCity extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {
-            city: void 0
-        }
-    };
+    }
 
-}
+    render () {
+        <div>
+            <input type="text" name="name"/>
+            <input type="text" name="name"/>
+            <input type="text" name="name"/>
+            <input type="text" name="name"/>
+
+        </div>
+    }
+
+};
