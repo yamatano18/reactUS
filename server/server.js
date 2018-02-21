@@ -121,16 +121,24 @@ app.post('activities/add', (req, res) => {
 });
 */
 
-app.post('/comments', (req, res) => {
+app.post('/comment', (req, res) => {
     const update = {
         comments: {
             user: {_id: ObjectID(req.body.userId), email: req.body.email},
-            value: req.body.text,
-            date: new Date(),
+            date: "2018-01-01 00:00:00",
+            text: req.body.text
         }
-    }
-    if (req.body.type === undefined)
+    };
+    try {
+        db.products.insertOne( {update} );
+    } catch (e) {
+        print (e);
+    };
+
+
+    /*if (req.body.type === undefined)
         res.status(500).json({message: `Internal Server Error: ${error}`});
+
     db.collection(req.body.type).updateOne({
         _id: ObjectID(req.body.parentId)
     }, {
@@ -139,4 +147,5 @@ app.post('/comments', (req, res) => {
         .catch(error => {
             res.status(500).json({message: `Internal Server Error: ${error}`});
         });
+       */
 })
