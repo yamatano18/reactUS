@@ -1,3 +1,363 @@
 * {
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
+
+/*/////////////////////////////////////////////
+
+                ORDRES GÉNÉRALS
+
+/////////////////////////////////////////////*/
+
+body{
+    font-family: 'Avenir Next', sans-serif;
+    font-weight: 300;
+}
+
+a{
+    color:inherit;                  /* HERITE COLOR PARENT */
+    text-decoration: none;
+}
+
+a:hover{
+    text-decoration: underline;
+}
+
+h2 {
+    font-size: 30px!important;
+    padding: 30px;
+    text-align: center;
+}
+
+mark{
+    color: #2D00A0!important;
+    background-color: inherit!important;
+}
+
+.row{
+    margin: 50px 0;
+}
+
+
+
+
+
+
+
+/*/////////////////////////////////////////////
+
+                   HEADER
+
+/////////////////////////////////////////////*/
+
+.header{
+    background: url('images/figures/background.jpg');
+    color: white;
+    padding: 0;
+    height: 100vh;
+}
+
+.header .fly-bg{
+    display: block;
+    position: absolute;
+    right: 160px;
+    top: 270px;
+    transform: rotate(20deg);
+}
+
+.pre-header{
+    height: 10%;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    background-color: rgba(0,0,0,0.2);
+}
+
+.pre-header strong{
+    font-size: 18px;
+    text-transform: uppercase;
+    font-weight: 200;
+    letter-spacing: 2px;
+}
+
+.pre-header strong:hover img{
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+}
+
+.pre-header strong img{
+    -webkit-transition: -webkit-transform .8s ease-in-out;
+    transition: transform .8s ease-in-out;
+    height: 25px;
+}
+
+.navbar{
+    width: 30vw;
+    display: flex;
+    justify-content: space-around;
+}
+
+.navbar a{
+    font-size: 18px;
+    font-weight: 300;
+    color: #bbbbbb;
+    transition: 0.5s all;
+}
+
+.navbar a:hover{
+    color: #ffffff;
+    text-decoration: none;
+    transition: 0.5s all;
+}
+
+.header .container{
+    height: 90%;
+    display: flex;
+    align-items:center;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.header .container strong{
+    font-weight: 700;
+    font-size: 60px;
+    line-height: 72px;
+    text-transform: uppercase;
+    width: 65%;
+    text-align: center;
+}
+
+.header .container small{
+    font-size: 24px;
+    width: 85%;
+    text-align: center;
+    margin-top: 40px;
+}
+
+.header .container button{
+    border: 3px solid white;
+    border-radius: 10px;
+    padding: 8px 50px;
+    background-color: inherit;
+    color: white;
+    font-size: 24px;
+    margin-top: 80px;
+    transition: 0.5s all;
+}
+
+.header .container button:hover{
+    background-color: rgba(255,255,255,0.4);
+    transition: 0.5s all;
+}
+
+
+
+/*/////////////////////////////////////////////
+
+                 BEST-PLACE
+
+/////////////////////////////////////////////*/
+
+.city{
+    padding: 50px;
+}
+
+.card
+{
+    border: none!important;
+}
+
+.card-body
+{
+    background-color: #F5F5F5;
+    border: none;
+}
+
+.card-body p
+{
+    font-size: 13px;
+    color: #4E4E4E;
+    font-weight: 400;
+}
+
+.card-body h5
+{
+    font-weight: 300;
+}
+
+.card-body ul
+{
+    list-style-type: none;
+}
+
+.card-body ul li
+{
+    float: left;
+    font-size: 17px;
+    color: #505050;
+    position: relative;
+    left: -25px;
+    margin-left: 10px;
+}
+
+.card-body ul li svg
+{
+    color: #BBBBBB;
+    margin-right: 3px;
+}
+
+.city-card
+{
+    margin: 40px 0;
+}
+
+
+
+
+/*/////////////////////////////////////////////
+
+                BEST-EVENT
+
+/////////////////////////////////////////////*/
+
+.best-event{
+    padding: 50px;
+}
+
+.best-event_content{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 150px;
+    color: white;
+    margin: 10px 0;
+}
+
+.best-event_content strong{
+    font-size: 24px;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+.best-event_content small{
+    font-size: 12px;
+    font-weight: 300;
+    text-align: center;
+}
+
+
+
+
+
+
+/*/////////////////////////////////////////////
+
+                   HOW IT'S WORK
+
+/////////////////////////////////////////////*/
+
+.howSubTitle{
+    text-align: center;
+
+}
+
+.howitwork img{
+
+    display : block;
+    margin: 0 auto;
+    height: 90px;
+    margin-bottom: 30px;
+
+}
+
+.howitwork p {
+    text-align: center;
+    font-size: 15px;
+    color: #9A9A9E;
+}
+.howitwork {
+    background-color: #FAFAFA;
+    padding: 50px;
+}
+
+
+
+
+/*/////////////////////////////////////////////
+
+                   FEEDBACK
+
+/////////////////////////////////////////////*/
+
+.feedbackSection{
+    padding: 50px;
+}
+
+.feedbackTitle {
+    text-align: center;
+}
+
+.carte {
+    background-color: #FAFAFA;
+    margin: 0 20px;
+    padding: 50px;
+    margin-bottom: 30px;
+    max-height: 370px;
+}
+
+.feedbackSection img{
+    border-radius: 50%;
+    display : block;
+    margin: 0 auto;
+    height: 90px;
+    margin-bottom: 30px;
+}
+
+.carte p{
+    font-weight: 300;
+    text-align: center;
+    margin-top: 20px;
+}
+
+.carte h6{
+    text-align: center;
+    font-weight: 600;
+}
+
+
+
+/*/////////////////////////////////////////////
+
+                   FOOTER
+
+/////////////////////////////////////////////*/
+
+
+.footer{
+    width: 100%;
+    height: 170px;
+    background-color: #FAFAFA;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.footer small {
+    margin-top: 20px;
+    font-size: 16px;
+    text-align: center;
+    color: #7E7E7E;
+    font-weight: 500;
+}
+
+.footer img {
+    height: 40px;
+    -webkit-transition: -webkit-transform .8s ease-in-out;
+    transition: transform .8s ease-in-out;
+}
+
+.footer img:hover{
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+}
