@@ -27,6 +27,10 @@ app.post('/images', imagesUpload(
 ));
 
 //routes
+app.use(bodyParser.urlencoded({
+    extended: true
+}));
+
 /* GET */
 app.get('/cities', function (req, res) {
     db.collection('cities').find().toArray()
@@ -93,14 +97,15 @@ app.get('/comments', function (req, res) {
 */
 
 /* POST */
-app.post('cities/addcity', (req, res) => {
-    db.collection('cities').insertOne(req.body, (error, result) => {
-        if (error)
-            res.status(400).json({message: `Internal Server Error: ${error}`});
+app.post('/cities/addCity', function (req, res) {
+    db.collection('cities').insertOne(req.body, (err, result) => {
+        if(err)
+            res.status(500).json({message: "error"});
         else
-            res.status(200).json({message: `Success!`});
+            res.status(200).json({message: "success"});
     });
 });
+
 app.post('activities/addactivity', (req, res) => {
     db.collection('activities').insertOne(req.body, (error, result) => {
         if (error)
@@ -171,4 +176,3 @@ app.post('/comment', (req, res) => {
             res.status(500).json({message: `Internal Server Error: ${error}`});
         });
        */
-})

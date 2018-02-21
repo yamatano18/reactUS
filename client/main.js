@@ -7,7 +7,6 @@ import City from './City.js';
 import AddCity from './AddCity.js';
 import Activ from './Activ.js';
 
-
 ReactDOM.render(
     <div>
         <header></header>
