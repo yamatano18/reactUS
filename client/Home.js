@@ -21,8 +21,17 @@ class CityLaconic extends React.Component {
 export default class Home extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {cities: [], name: "", lat: null, long: null, country: ""};
-
+        this.state = {cities: [], name: "", lat: null, long: null,
+            events: [{
+                _id : 1,
+                name: 'Le festival de BD',
+                picture: '/images/Aix/festival1.jpg'
+            },
+                {
+                    _id : 1,
+                    name: 'Le festival de BD',
+                    picture: '/images/Aix/festival1.jpg'
+                }]};
     };
 
     loadData() {
@@ -32,6 +41,43 @@ export default class Home extends React.Component {
             .catch(err => console.log(err));               // Bad news: an error!
     }
 
+        addCity(e) {
+        e.preventDefault();
+        const cityName = this.state.name;
+        const cityLatitude = this.state.lat;
+        const cityLongitude = this.state.long;
+        const countryName = this.state.country;
+
+        fetch('/cities/addCity', {
+            method: 'POST', headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({cityName, cityLatitude, cityLongitude, countryName})
+        }).then(res => {
+            if (res.ok) {
+                res.json().then(id => console.log("City added with id " + id));
+                this.loadData();
+            }
+            else
+                res.json().then(err => alert("Failed to add city: " + err.message));
+        }).catch(err => alert("Error in sending data to server: " + err.message));
+
+        this.setState({name: "", lat: null, long: null});
+    }
+
+    handleNameChange(e) {
+        this.setState({name: e.target.value});
+    }
+
+    handleLatChange(e) {
+        this.setState({lat: e.target.value});
+    }
+
+    handleLongChange(e) {
+        this.setState({long: e.target.value});
+    }
+
+    handleCountryChange(e) {
+        this.setState({country: e.target.value});
+    }
 
     componentDidMount() {
         this.loadData();
@@ -56,6 +102,19 @@ export default class Home extends React.Component {
         const mappedCities = this.state.cities.map(p => <BestPlace cities={p}/>)
         return (
             <div>
+                <form onSubmit={(e) => this.addCity(e)}>
+                    <input type="text" value={this.state.name} onChange={(e) => {
+                        this.handleNameChange(e)
+                    }} placeholder="Name of the city"/> <br/>
+                    <input type="number" value={this.state.lat} onChange={(e) => {
+                        this.handleLatChange(e)
+                    }} placeholder="Latitude"/> <br/>
+                    <input type="number" value={this.state.long} onChange={(e) => {
+                        this.handleLongChange(e)
+                    }} placeholder="Longitude"/> <br/>
+                    <input type="submit" value="Create"/>
+                </form>
+
                 <Header title="WORDLWIDE"/>
 
                 <Container nameClass="city" subTitle="The place to be in the" colorTitle="world">
