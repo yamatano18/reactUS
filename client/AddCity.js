@@ -8,7 +8,7 @@ import 'react-images-uploader/font.css';
 import {HTTP_SERVER_PORT_IMAGES} from '../server/constants'
 
 
-export default class City extends React.Component {
+export default class AddCity extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
