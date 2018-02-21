@@ -22,7 +22,17 @@ export default class Home extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            cities: []
+            cities: [],
+            events: [{
+                _id : 1,
+                name: 'Le festival de BD',
+                picture: '/images/Aix/festival1.jpg'
+            },
+                {
+                _id : 1,
+                name: 'Le festival de BD',
+                picture: '/images/Aix/festival1.jpg'
+            }]
         }
 
     };
@@ -68,9 +78,7 @@ export default class Home extends React.Component {
 
                 <Container nameClass="best-event" subTitle="Best event in the" colorTitle="world">
 
-                    <BestEvent
-                        eventTitle="CONNEMARA MOUNTAIN WALKING FESTIVAL"
-                    />
+                    {this.state.events.map((e,i) => <BestEvent key={i} event={e} />)}
 
                 </Container>
 
@@ -214,7 +222,7 @@ class BestEvent extends React.Component{
         return(
             <div className="col-md-12 best-event_content">
 
-                <strong>{this.props.eventTitle}</strong>
+                <strong>{this.props.event.name}</strong>
 
                 <small>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</small>
 
