@@ -95,7 +95,7 @@ export default class Activ extends React.Component {
     render() {
         let activity = this.state.activity;
         if(activity == undefined){
-            return ( <div>loading</div>)
+            return ( <div>loading data from DB</div>)
         }
         else {
             return (
