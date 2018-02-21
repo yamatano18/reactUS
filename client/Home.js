@@ -55,23 +55,14 @@ export default class Home extends React.Component {
     // }
 
     render() {
+        const mappedCities = this.state.cities.map(p => <BestPlace cities={p}/>)
         return (
             <div>
                 <Header title="WORDLWIDE"/>
 
                 <Container nameClass="city" subTitle="The place to be in the" colorTitle="world">
 
-                    <BestPlace
-
-                    />
-
-                    <BestPlace
-
-                    />
-
-                    <BestPlace
-
-                    />
+                    {mappedCities}
 
                 </Container>
 
@@ -198,14 +189,16 @@ class BestPlace extends React.Component{
         return(
             <div className="col-md-4">
                 <div className="card">
-                    <div className="card-img-top" style={this.props.cityImg}>
-
+                    <div className="card-img-top" style={this.props.picture}>
+                        <Link to={`/city/${this.props.cities._id}`}>
+                            <img src={this.props.cities.picture}  />
+                        </Link>
                     </div>
                     <div className="card-body">
-                        <h5 className="card-title"><strong>Gdańsk,</strong> Poland</h5>
-                        <p className="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                        <h5 className="card-title"><strong>{this.props.name}</strong></h5>
+                        <p className="card-text">{this.props.cities.name}</p>
                         <ul>
-                            <li><i className="fa fa-heart"> </i>&#32;{this.props.like}</li>
+                            <li><i className="fa fa-heart"> </i>&#32;{this.props.cities.likers}</li>
                             <li><i className="fa fa-comment"> </i>&#32;{this.props.commentNb}</li>
                         </ul>
                     </div>
@@ -217,6 +210,7 @@ class BestPlace extends React.Component{
 
 class BestEvent extends React.Component{
     render(){
+
         return(
             <div className="col-md-12 best-event_content">
 
