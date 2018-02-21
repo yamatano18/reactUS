@@ -30,7 +30,7 @@ export default class City extends React.Component {
 
     loadData() {
 
-        fetch('/city/' + this.props.params.id)           // Ask the route /cities to the server
+        fetch('/city/' + this.props.params.id)             // Ask the route /cities to the server
             .then(res => res.json())                       // Retrieve the objects  in json
             .then(data => this.setState({city: data}))     // Modify the state accordingly
             .catch(err => console.log(err));               // Bad news: an error!
@@ -61,8 +61,8 @@ export default class City extends React.Component {
                     </div>
                     <div>
                         <div>
-                        <h1>Places</h1>
-                        {this.state.city.activities.filter(a => a.nature=='place').map((a,i) => <Activity activity={a}/> )}
+                            <h1>Places</h1>
+                            {this.state.city.activities.filter(a => a.nature=='place').map((a,i) => <Activity activity={a}/> )}
                         </div>
                         <div>
                         <h1>Events</h1>
