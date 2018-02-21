@@ -27,6 +27,45 @@ app.post('/images', imagesUpload(
 ));
 
 //routes
+app.route('/cities')
+    .get((req, res) => {
+        db.collection('cities').find().toArray()
+            .then(cities => res.json(cities))
+            .catch(error => {
+                res.status(500).json({message: `Internal Server Error: ${error}`});
+            });
+    })
+    .post( (req, res) => {
+        db.collection('cities').insertOne(req.body, (error, result) => {
+            if (error)
+                res.status(500).json({message: `Internal Server Error: ${error}`});
+            else
+                res.status(200).json({message: `Success!`});
+        });
+    })
+//activities
+//
+//
+app.route('/activities')
+    .get((req, res) => {
+        db.collection('activities').find().toArray()
+            .then(cities => res.json(cities))
+            .catch(error => {
+                res.status(500).json({message: `Internal Server Error: ${error}`});
+            });
+    })
+    .post((req, res) => {
+        db.collection('activities').insertOne(req.body)
+            .then(res.status(200).json({message: `Success!`}))
+            .catch(error => {
+                res.status(500).json({message: `Internal Server Error: ${error}`});
+            });
+        db.collection('cities').updateOne({_id: ObjectID(req.body.cityId)}, {$push: {activities: req.body}})
+            .then(res.status(200).json({message: `Success!`}))
+            .catch(error => {
+                res.status(500).json({message: `Internal Server Error: ${error}`});
+            });
+    });
 /* GET */
 app.get('/cities', function (req, res) {
     db.collection('cities').find().toArray()
@@ -121,6 +160,29 @@ app.post('activities/add', (req, res) => {
 });
 */
 
+app.post('/comments', (req, res) => {
+    const update = {
+        comments: {
+            user: {
+                _id: ObjectID(req.body.userId),
+                email: req.body.email
+            },
+            date: new Date(),
+            text: req.body.text
+        }
+    }
+    if(req.body.type === undefined)
+        res.status(500).json({message: `Internal Server Error: ${error}`});
+    db.collection(req.body.type).updateOne({
+        _id: ObjectID(req.body.parentId)
+    }, {
+        $push: update
+    }).then(res.status(200).json({message: `Success`}))
+        .catch(error => {
+            res.status(500).json({message: `Internal Server Error: ${error}`});
+        });
+});
+/*
 app.post('/comment', (req, res) => {
     const update = {
         comments: {
@@ -134,7 +196,7 @@ app.post('/comment', (req, res) => {
     } catch (e) {
         print (e);
     };
-
+*/
 
     /*if (req.body.type === undefined)
         res.status(500).json({message: `Internal Server Error: ${error}`});
@@ -148,4 +210,3 @@ app.post('/comment', (req, res) => {
             res.status(500).json({message: `Internal Server Error: ${error}`});
         });
        */
-})
