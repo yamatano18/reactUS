@@ -1,11 +1,6 @@
 import React from 'react';
-import {Link} from 'react-router';
-
-import ImagesUploader from 'react-images-uploader';
 import 'react-images-uploader/styles.css';
 import 'react-images-uploader/font.css';
-
-import {HTTP_SERVER_PORT_IMAGES} from '../server/constants'
 
 
 export default class AddCity extends React.Component {
@@ -13,14 +8,15 @@ export default class AddCity extends React.Component {
         super(props);
     }
 
-    render () {
-        <div>
-            <input type="text" name="name"/>
-            <input type="text" name="name"/>
-            <input type="text" name="name"/>
-            <input type="text" name="name"/>
-
-        </div>
+    render() {
+        return (
+            <div>
+                <input type="text" name="name" placeholder="name"/>
+                <input type="text" name="description" placeholder="description"/>
+                <input type="text" name="latitude" placeholder="latitude"/>
+                <input type="text" name="longitude" placeholder="longitude"/>
+            </div>
+        )
     }
 
 };

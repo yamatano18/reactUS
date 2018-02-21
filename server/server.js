@@ -64,6 +64,7 @@ app.get('/activity/:id', function (req, res) {
     });
 });
 
+/*
 app.get('/comments', function (req, res) {
     db.collection('comments').find().toArray()
         .then(cities => res.json(cities))
@@ -89,6 +90,8 @@ app.get('/comments', function (req, res) {
             res.status(500).json({message: `Internal Server Error: ${error}`});
         });
 });
+*/
+
 /* POST */
 app.post('cities/addcity', (req, res) => {
     db.collection('cities').insertOne(req.body, (error, result) => {
@@ -98,6 +101,16 @@ app.post('cities/addcity', (req, res) => {
             res.status(200).json({message: `Success!`});
     });
 });
+app.post('activities/addactivity', (req, res) => {
+    db.collection('activities').insertOne(req.body, (error, result) => {
+        if (error)
+            res.status(400).json({message: `Internal Server Error: ${error}`});
+        else
+            res.status(200).json({message: `Success!`});
+    });
+});
+
+/*
 app.post('activities/add', (req, res) => {
     db.collection('activities').insertOne(req.body, (error, result) => {
         if (error)
@@ -106,11 +119,24 @@ app.post('activities/add', (req, res) => {
             res.status(200).json({message: `Success!`});
     });
 });
-app.post('activities/add', (req, res) => {
-    db.collection('activities').insertOne(req.body, (error, result) => {
-        if (error)
-            res.status(400).json({message: `Internal Server Error: ${error}`});
-        else
-            res.status(200).json({message: `Success!`});
-    });
-});
+*/
+
+app.post('/comments', (req, res) => {
+    const update = {
+        comments: {
+            user: {_id: ObjectID(req.body.userId), email: req.body.email},
+            value: req.body.text,
+            date: new Date(),
+        }
+    }
+    if (req.body.type === undefined)
+        res.status(500).json({message: `Internal Server Error: ${error}`});
+    db.collection(req.body.type).updateOne({
+        _id: ObjectID(req.body.parentId)
+    }, {
+        $push: update
+    }).then(res.status(200).json({message: `Success`}))
+        .catch(error => {
+            res.status(500).json({message: `Internal Server Error: ${error}`});
+        });
+})
