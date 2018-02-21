@@ -21,19 +21,7 @@ class CityLaconic extends React.Component {
 export default class Home extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {
-            cities: [],
-            events: [{
-                _id : 1,
-                name: 'Le festival de BD',
-                picture: '/images/Aix/festival1.jpg'
-            },
-                {
-                _id : 1,
-                name: 'Le festival de BD',
-                picture: '/images/Aix/festival1.jpg'
-            }]
-        }
+        this.state = {cities: [], name: "", lat: null, long: null, country: ""};
 
     };
 

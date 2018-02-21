@@ -24,8 +24,8 @@ export default class Map extends Component {
         }
 
         return (
-                <div style={{height: 10, width: 10}}>
-                    <GoogleMapReact style={{height: 10, width: 10}}
+                <div style={{height: 400, width: 200}}>
+                    <GoogleMapReact styles={{height: 10, width: 10}}
                                     bootstrapURLKeys={{key: ['AIzaSyAVo0Woy8NwYN07-8Zpz5cq2tVzi4WPtEI']}}
                                     defaultCenter={this.props.center}
                                     defaultZoom={this.props.zoom}>
