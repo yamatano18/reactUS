@@ -90,7 +90,7 @@ app.get('/comments', function (req, res) {
         });
 });
 /* POST */
-app.post('cities/add', (req, res) => {
+app.post('cities/addcity', (req, res) => {
     db.collection('cities').insertOne(req.body, (error, result) => {
         if (error)
             res.status(400).json({message: `Internal Server Error: ${error}`});
