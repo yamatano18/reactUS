@@ -51,7 +51,7 @@ class ActivFrom extends React.Component {
 
     render() {
         return (
-            <form onSubmit={this.handleSubmit}>
+            <form onSubmit={this.handleSubmit} action='/comment' method='post'>
                 <label>
                     <textarea placeholder="Your comment" name="description" value={this.state.value} onChange={this.handleChange}/>
                 </label>
@@ -60,6 +60,8 @@ class ActivFrom extends React.Component {
             </form>
         );
     }
+
+
 }
 
 export default class Activ extends React.Component {
