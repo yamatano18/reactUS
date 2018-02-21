@@ -8,7 +8,7 @@ import Modal from './Modal.js';
 import {HTTP_SERVER_PORT_IMAGES} from '../server/constants'
 
 
-class Comment extends React.Component{
+class Comment extends React.Component {
     render(){
         const d = new Date(this.props.comm.date);
         const today = new Date();
@@ -21,13 +21,44 @@ class Comment extends React.Component{
     }
 }
 
-class Picture extends React.Component{
+class Picture extends React.Component {
     render(){
         return(
             <div className='picture'>
                 <img src= {this.props.picture} width="150px" height="150px"/>
             </div>
         )
+    }
+}
+
+class ActivFrom extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {value: ''};
+
+        this.handleChange = this.handleChange.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
+    }
+
+    handleChange(event) {
+        this.setState({value: event.target.value});
+    }
+
+    handleSubmit(event) {
+        alert('A form was submitted: ' + this.state.value);
+        event.preventDefault();
+    }
+
+    render() {
+        return (
+            <form onSubmit={this.handleSubmit}>
+                <label>
+                    <textarea placeholder="Your comment" name="description" value={this.state.value} onChange={this.handleChange}/>
+                </label>
+                <br/>
+                <input type="submit" value="Submit"/>
+            </form>
+        );
     }
 }
 
@@ -59,12 +90,6 @@ export default class Activ extends React.Component {
         this.setState({isOpen: !this.state.isOpen});
     }
 
-    addComment(){
-        this.setState({isOpen: !this.state.isOpen});
-
-    }
-
-
     render() {
         let activity = this.state.activity;
         if(activity == undefined){
@@ -78,16 +103,11 @@ export default class Activ extends React.Component {
                     <p>{this.state.activity.description}</p>
                     <p><a id="open" onClick={(e)=>this.toggle(e)}><button>Add your comment</button></a></p>
                     <Modal isOpen={this.state.isOpen} toggle={this.toggle}>
-                        <form onSubmit={(e) => this.addCity(e)}>
-                        <input type="text" name="name" placeholder="Your name"/><br/>
-                        <input type="text" name="description" placeholder="Your comment"/><br/>
-                        <submit>Send comment!</submit>
-                        </form>
+                        <ActivFrom/>
                     </Modal>
                     {this.state.activity.comments.map((a,i) => <Comment comm={a}/> )}
 
                 </div>
-
             )
         }
     }
