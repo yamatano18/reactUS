@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+<head><link rel="icon" type="image/jpg" href="images/malaysia.jpg">
+    <link rel="stylesheet" type="text/CSS" href="CSS/newcss.css">
+    <meta charset="UTF-8">
+    <meta name="keywords" content="malaysia,map,malaysia map,famous food in malaysia,food in malaysia,food to eat in malaysia ">
+    <link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css">
+    <title>Map Details</title>
+    <style>
+        h1
+        {
+            text-decoration: underline;
+        }
+
+        * {box-sizing:border-box}
+        body {font-family: Verdana,sans-serif;margin:0}
+        #mapDiv
+        {float:right;
+            width:50%;
+            height:750px;
+            border:thin solid #CCC;
+        }
+
+        #controlPanel
+        {
+            float:left;
+            width:50%;
+            z-index: 6;
+            background-color:#A4D3EE;
+            padding: 5px;
+            border: 2px solid #999;
+        }
+
+        #directions
+        {
+            float:left;
+            width:100%;
+            margin:0px;
+
+        }
+
+        .material-icons
+        {width: 1.8em;
+
+
+            color: red;}
+
+    </style>
+    <!-- Google Maps -->
+
+    <!-- Start: injected by Adguard -->
+    <script src="//local.adguard.com/adguard-ajax-api/injections/userscripts/Adguard Popup Blocker?ts=63643317897076" type="text/javascript"></script>
+    <script src="//local.adguard.com/adguard-ajax-api/injections/content-script.js?ts=63643316095595&amp;domain=derek.dkit.ie&amp;css=1&amp;js=1&amp;generic=1&amp;stealth=1&amp;ref=0" type="text/javascript"></script>
+
+    <!-- End: injected by Adguard -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD3GNUNqilg3CdYIedKxEY5zgCl4p7xp-4"></script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+
+    <script>
+        var currentLocationMap;
+        var directionsDisplay;
+        var directionsService;
+        var currentLocationMap;
+
+
+        var dkit_contentString = '';
+        var CONTENT = 0;
+        var LATITUDE = 1;
+        var LONGITUDE = 2;
+        var locations;
+        var dkit_map;
+        var location_marker;
+        var mapWindow;
+        var lat = 0.0;
+        var long = 0.0;
+        var loc;
+        window.onload = onAllAssetsLoaded;
+        document.write("<div id='loadingMessage'>Loading...</div>");
+        function onAllAssetsLoaded()
+        {
+            // Wait for Cordova to connect with the device
+
+            document.getElementById('loadingMessage').style.visibility = "hidden";
+            document.addEventListener("deviceready", onDeviceReady, false);
+        }
+
+        // Cordova is ready to be used!
+        function onDeviceReady()
+        {
+            // note, it takes a few seconds for the gps to work, so you need to give a high timeout value
+            var options = {maximumAge: 1000, timeout: 50000, enableHighAccuracy: true};
+            navigator.geolocation.getCurrentPosition(onGeolocationSuccess, onGeolocationError, options);
+        }
+
+
+        function getLocation() {
+
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(showPosition);
+
+
+            }
+
+        }
+
+
+        function showPosition(position) {
+            lat = position.coords.latitude;
+            long = position.coords.longitude;
+            loc = new google.maps.LatLng(lat, long);
+
+            directionsService = new google.maps.DirectionsService();
+            // route planner
+            directionsDisplay = new google.maps.DirectionsRenderer();
+
+
+            var mapOptions = {zoom: 12, center: loc};
+            currentLocationMap = new google.maps.Map(document.getElementById('mapDiv'), mapOptions);
+            directionsDisplay.setMap(currentLocationMap);
+            directionsDisplay.setPanel(document.getElementById('directions'));
+
+            var marker = new google.maps.Marker({
+                position: loc,
+                map: currentLocationMap,
+                title: "u r here"
+
+
+            });
+
+            marker.setMap(currentLocationMap);
+            var infowindow = new google.maps.InfoWindow({
+                content: " Your Location Detected<br>\n\
+latitude:" + lat + "<br> longitude:" + long
+
+            });
+
+            infowindow.open(currentLocationMap, marker);
+        }
+
+        google.maps.event.addDomListener(window, 'load', initialize);
+
+
+
+
+
+
+        function init()
+        {
+            getLocation();
+
+        }
+
+        var travelMode = "DRIVING";
+
+        function calculateRoute()
+        {
+            var end = document.getElementById('end').value;
+
+            var request = {
+                origin: loc,
+                destination: end,
+                travelMode: google.maps.TravelMode[travelMode]};
+
+
+
+            directionsService.route(request, function (response, status)
+            {
+                if (status == google.maps.DirectionsStatus.OK)
+                {
+                    directionsDisplay.setDirections(response);
+                }
+            });
+        }
+        //////
+    </script>
+
+</head>
+
+<body onload='init()'>
+
+<div id="controlPanel">
+
+    <b>Please Enter The Place You Want To Go: </b>
+    <input id="end" type="text">
+
+
+    <button><i class="material-icons" onclick="travelMode = 'DRIVING';
+                    calculateRoute()">directions_car</i></button>
+    <button><i class="material-icons" onclick="travelMode = 'TRANSIT';
+                    calculateRoute()">directions_railway</i></button>
+    <button><i class="material-icons" onclick="travelMode = 'BICYCLING';
+                    calculateRoute()">directions_bike</i></button>
+    <button><i class="material-icons" onclick="travelMode = 'WALKING';
+                    calculateRoute()">directions_walk</i></button>
+
+    <br>
+    <br>
+    <br>
+
+    <details><summary>Directions</summary>
+        <div id="directions"></div>
+
+</div>
+
+<div id="mapDiv"></div>
+
+</body>
+</html>
