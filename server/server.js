@@ -109,7 +109,7 @@ app.post('/cities/addcity', function (req, res) {
     });
 });
 
-app.post('activities/addactivity', (req, res) => {
+app.post('/activities/addactivity', (req, res) => {
     db.collection('activities').insertOne(req.body, (error, result) => {
         if (error)
             res.status(400).json({message: `Internal Server Error: ${error}`});
