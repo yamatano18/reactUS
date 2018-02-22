@@ -1,5 +1,7 @@
 import React from 'react';
 import {Link} from 'react-router';
+import Container from './Container.js';
+import Footer from './Footer.js';
 
 import ImagesUploader from 'react-images-uploader';
 import 'react-images-uploader/styles.css';
@@ -21,17 +23,20 @@ class CityLaconic extends React.Component {
 export default class Home extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {cities: [], name: "", lat: null, long: null,
+        this.state = {
+            cities: [],
             events: [{
                 _id : 1,
                 name: 'Le festival de BD',
                 picture: '/images/Aix/festival1.jpg'
             },
                 {
-                    _id : 1,
-                    name: 'Le festival de BD',
-                    picture: '/images/Aix/festival1.jpg'
-                }]};
+                _id : 1,
+                name: 'Le festival de canne',
+                picture: '/images/Aix/festival2.jpg'
+            }]
+        }
+
     };
 
     loadData() {
@@ -39,44 +44,6 @@ export default class Home extends React.Component {
             .then(res => res.json())                       // Retrieve the objects  in json
             .then(data => this.setState({cities: data}))   // Modify the state accordingly
             .catch(err => console.log(err));               // Bad news: an error!
-    }
-
-        addCity(e) {
-        e.preventDefault();
-        const cityName = this.state.name;
-        const cityLatitude = this.state.lat;
-        const cityLongitude = this.state.long;
-        const countryName = this.state.country;
-
-        fetch('/cities/addCity', {
-            method: 'POST', headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({cityName, cityLatitude, cityLongitude, countryName})
-        }).then(res => {
-            if (res.ok) {
-                res.json().then(id => console.log("City added with id " + id));
-                this.loadData();
-            }
-            else
-                res.json().then(err => alert("Failed to add city: " + err.message));
-        }).catch(err => alert("Error in sending data to server: " + err.message));
-
-        this.setState({name: "", lat: null, long: null});
-    }
-
-    handleNameChange(e) {
-        this.setState({name: e.target.value});
-    }
-
-    handleLatChange(e) {
-        this.setState({lat: e.target.value});
-    }
-
-    handleLongChange(e) {
-        this.setState({long: e.target.value});
-    }
-
-    handleCountryChange(e) {
-        this.setState({country: e.target.value});
     }
 
     componentDidMount() {
@@ -102,30 +69,25 @@ export default class Home extends React.Component {
         const mappedCities = this.state.cities.map(p => <BestPlace cities={p}/>)
         return (
             <div>
-                <form onSubmit={(e) => this.addCity(e)}>
-                    <input type="text" value={this.state.name} onChange={(e) => {
-                        this.handleNameChange(e)
-                    }} placeholder="Name of the city"/> <br/>
-                    <input type="number" value={this.state.lat} onChange={(e) => {
-                        this.handleLatChange(e)
-                    }} placeholder="Latitude"/> <br/>
-                    <input type="number" value={this.state.long} onChange={(e) => {
-                        this.handleLongChange(e)
-                    }} placeholder="Longitude"/> <br/>
-                    <input type="submit" value="Create"/>
-                </form>
-
-                <Header title="WORDLWIDE"/>
+                <Header/>
 
                 <Container nameClass="city" subTitle="The place to be in the" colorTitle="world">
 
                     {mappedCities}
+
+                    <div className="col-md-12 boutton-violet">
+                        <button>Add your city</button>
+                    </div>
 
                 </Container>
 
                 <Container nameClass="best-event" subTitle="Best event in the" colorTitle="world">
 
                     {this.state.events.map((e,i) => <BestEvent key={i} event={e} />)}
+
+                    <div className="col-md-12 boutton-violet">
+                        <button>See more</button>
+                    </div>
 
                 </Container>
 
@@ -170,49 +132,43 @@ export default class Home extends React.Component {
 
                 </Container>
 
+                <Footer/>
+
             </div>
         );
     }
 
 };
 
-class Container extends React.Component {
-    render(){
-        return(
-            <section className={this.props.nameClass}>
-
-                <div className="container">
-
-                    <h2>{this.props.subTitle}<mark>{this.props.colorTitle}</mark></h2>
-
-                    <div className="row">
-
-                        {this.props.children}
-
-                    </div>
-
-                </div>
-
-            </section>
-        )
-    }
-};
 
 class Header extends React.Component {
     render() {
+
+        var bgHeader = {
+            backgroundImage : "url('images/figures/background.jpg')"
+        }
+
         return(
 
-            <header className="header">
+            <header className="header" style={ bgHeader }>
 
                 <img className="fly-bg" src="images/figures/fly-bg.png" alt=""/>
 
                 <section className="pre-header">
 
-                    <strong><img src="images/figures/logo-white.png" alt="logo"/>&#32;{this.props.title}</strong>
+                    <strong><a href="/"><img src="images/figures/logo-white.png" alt="logo"/>&#32;WorldWide</a></strong>
+
+                    <input id="burger" type="checkbox" className="hamburger"/>
+
+                    <label htmlFor="burger">
+                        <span> </span>
+                        <span> </span>
+                        <span> </span>
+                    </label>
 
                     <nav className="navbar">
 
-                        <a href="#">Home</a>
+                        <a href="/" className="active">Home</a>
                         <a href="#">City</a>
                         <a href="#">About</a>
                         <a href="#"><i className="fa fa-user"> </i>&#32;Login</a>
@@ -241,17 +197,22 @@ class Header extends React.Component {
 
 class BestPlace extends React.Component{
     render(){
+
+        var stylebg = {
+            backgroundImage : "url("+this.props.cities.picture+")"
+        }
+
+
         return(
             <div className="col-md-4">
                 <div className="card">
-                    <div className="card-img-top" style={this.props.picture}>
-                        <Link to={`/city/${this.props.cities._id}`}>
-                            <img src={this.props.cities.picture}  />
-                        </Link>
+                    <Link to={`/city/${this.props.cities._id}`}>
+                    <div className="card-img-top" style={ stylebg }>
                     </div>
+                    </Link>
                     <div className="card-body">
-                        <h5 className="card-title"><strong>{this.props.name}</strong></h5>
-                        <p className="card-text">{this.props.cities.name}</p>
+                        <h5 className="card-title"><strong>{this.props.cities.name}</strong></h5>
+                        <p className="card-text">{this.props.cities.description}</p>
                         <ul>
                             <li><i className="fa fa-heart"> </i>&#32;{this.props.cities.likers}</li>
                             <li><i className="fa fa-comment"> </i>&#32;{this.props.commentNb}</li>
@@ -266,8 +227,12 @@ class BestPlace extends React.Component{
 class BestEvent extends React.Component{
     render(){
 
+        var stylebg = {
+            backgroundImage : "url("+this.props.event.picture+")"
+        }
+
         return(
-            <div className="col-md-12 best-event_content">
+            <div className="col-md-12 best-event_content" style={stylebg}>
 
                 <strong>{this.props.event.name}</strong>
 
