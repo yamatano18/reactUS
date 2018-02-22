@@ -22,10 +22,11 @@ export default class Modal extends React.Component {
 
         return (
             <div className="row modaltest">
-                <div id="myModal" className="col-md-12">
+                <div id="myModal" className="col-md-8">
 
                     <div className="modal-content">
                         <span onClick={(e)=>this.props.toggle(e)} className="close">&times;</span>
+                        <h2>Add your city</h2>
                         {this.props.children}
                     </div>
 

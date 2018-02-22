@@ -131,9 +131,12 @@ export default class Home extends React.Component {
 
                     <div id="wrap" className="text-center">
                         <br/>
-                        <button onClick={(e)=>this.toggle(e)} className="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
-                            ADD YOUR CITY
-                        </button>
+                        <div className="col-md-12 boutton-violet">
+                            <button onClick={(e)=>this.toggle(e)} className="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
+                                ADD YOUR CITY
+                            </button>
+                        </div>
+
                     </div>
                     <Modal title="First Modal" isOpen={ this.state.isOpen} toggle={this.toggle}>
 
@@ -351,29 +354,37 @@ class CityForm extends React.Component {
     render() {
         return (
             <form onSubmit={this.props.addCity}>
-                <label htmlFor="name">City name</label>
-                <input id="name" name="name" type="text" />
 
-                <label htmlFor="long">Longitude</label>
-                <input id="long" name="long" type="text" />
+                <div className="form-group">
+                    <label htmlFor="name">City name</label>
+                    <input id="name" className="form-control" name="name" type="text" placeholder="Enter the city name" required="required"/>
 
-                <label htmlFor="lat">Latitude</label>
-                <input id="lat" name="lat" type="text" />
-                <input type='hidden' name='picturename' id='picturename'/>
-                <textarea id="description" name="description" />
-                <ImagesUploader
-                    url={"http://localhost:9090/images"}
-                    optimisticPreviews={true}
-                    multiple={false}
-                    onLoadEnd={(err, result) =>{
-                        if (err)
-                            console.error(err);
-                        else
-                            document.getElementById('picturename').value = result;
-                        //this.setState({picture: result})
-                    }}
-                    label="Attach image"/>
+                    <label htmlFor="long">Longitude</label>
+                    <input id="long" className="form-control" name="long" type="text" placeholder="Enter the longitude" />
+
+                    <label htmlFor="lat">Latitude</label>
+                    <input id="lat" name="lat" className="form-control" type="text" placeholder="Enter the latitude" />
+
+                    <input type='hidden' className="form-control" name='picturename' id='picturename' required="required"/>
+
+                    <label for="description">Description</label>
+                    <textarea className="form-control" id="description" name="description" rows="3" placeholder="Enter the description of the city"></textarea>
+
+                    <ImagesUploader
+                        url={"http://localhost:9090/images"}
+                        optimisticPreviews={true}
+                        multiple={false}
+                        onLoadEnd={(err, result) =>{
+                            if (err)
+                                console.error(err);
+                            else
+                                document.getElementById('picturename').value = result;
+                            //this.setState({picture: result})
+                        }}
+                        label="Ajouter une image"/>
+
                 <button>Add city</button>
+                </div>
             </form>
         );
     }
