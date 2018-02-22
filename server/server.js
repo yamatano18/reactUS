@@ -10,6 +10,9 @@ import {SERVER, PORT, HTTP_SERVER_PORT, HTTP_SERVER_PORT_IMAGES, IMAGES} from '.
 
 const app = express();
 app.use(express.static(__dirname + '/../static'));
+app.use(bodyParser.urlencoded({
+    extended: true
+}));
 app.use(bodyParser.json());
 app.use(corsPrefetch);
 
@@ -68,36 +71,7 @@ app.get('/activity/:id', function (req, res) {
     });
 });
 
-/*
-app.get('/comments', function (req, res) {
-    db.collection('comments').find().toArray()
-        .then(cities => res.json(cities))
-        .catch(error => {
-            res.status(500).json({message: `Internal Server Error: ${error}`});
-        });
-});
-app.get('/comment/:id', function (req, res) {
-    db.collection('comments').findOne({'_id':ObjectID(req.params.id)}, function(error, result) {
-        if (error)
-            res.status(400).json({message: `Internal Server Error: ${error}`});
-        else if (result)
-            res.send(result);
-        else
-            res.status(404);
-    });
-});
-
-app.get('/comments', function (req, res) {
-    db.collection('cities').find().toArray()
-        .then(cities => res.json(cities))
-        .catch(error => {
-            res.status(500).json({message: `Internal Server Error: ${error}`});
-        });
-});
-*/
-
-/* POST */
-app.post('/cities/addCity', function (req, res) {
+app.post('/cities/addcity', function (req, res) {
     db.collection('cities').insertOne(req.body, (err, result) => {
         if(err)
             res.status(500).json({message: "error"});
@@ -106,7 +80,7 @@ app.post('/cities/addCity', function (req, res) {
     });
 });
 
-app.post('activities/addactivity', (req, res) => {
+app.post('/activities/addactivity', (req, res) => {
     db.collection('activities').insertOne(req.body, (error, result) => {
         if (error)
             res.status(400).json({message: `Internal Server Error: ${error}`});
@@ -148,6 +122,9 @@ app.post('/comments', (req, res) => {
             res.status(500).json({message: `Internal Server Error: ${error}`});
         });
 });
+
+app.post('/images', imagesUpload('./static/upload',HTTP_SERVER_PORT_IMAGES));
+
 /*
 app.post('/comment', (req, res) => {
     const update = {
