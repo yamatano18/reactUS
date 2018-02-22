@@ -36,7 +36,6 @@ export default class City extends React.Component {
         }
     };
 
-
     loadData() {
 
         fetch('/city/' + this.props.params.id)             // Ask the route /cities to the server
@@ -60,6 +59,10 @@ export default class City extends React.Component {
                 backgroundImage: "url(" + this.state.city.picture + ")"
             };
             let _url = `https://maps.google.com/maps?q=${this.state.city.coordinates.lat},${this.state.city.coordinates.long}&hl=es;z=14&amp;output=embed`;
+
+            const dupa = this.state.city._id;
+
+            console.log("DUAP1" + dupa);
             return (
                 <div>
                     <header className="header" style={bgHeader}>
@@ -143,7 +146,6 @@ export default class City extends React.Component {
 
                 </div>
             )
-
         }
     }
 }
@@ -152,8 +154,7 @@ class ActivityForm extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            pictures: [],
-            city: void 0
+            pictures: []
         };
 
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -162,8 +163,9 @@ class ActivityForm extends React.Component {
     handleSubmit(event) {
         event.preventDefault();
         const data = new FormData(event.target);
+
         const activity = {
-            cityId: this.props.cityId,
+            cityId: "5a8e8761b632768b101edbfd",
             name: data.get('name'),
             nature: data.get('nature'),
             startDate: data.get('startDate'),
@@ -187,7 +189,7 @@ class ActivityForm extends React.Component {
     render() {
         return (
             <form onSubmit={this.handleSubmit}>
-                <label htmlFor="name">Activity name</label>
+                <label htmlFor="name">Activity / Place name</label>
                 <input id="name" name="name" type="text" />
 
                 <textarea id="description" name="description" />
@@ -209,7 +211,7 @@ class ActivityForm extends React.Component {
                             this.setState({pictures:[...this.state.pictures, result]})
                     }}
                     label="Put image"/>
-                <button>Add activity</button>
+                <button>Add activity / place</button>
             </form>
         );
     }
