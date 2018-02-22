@@ -5,6 +5,7 @@ import ImagesUploader from 'react-images-uploader';
 import 'react-images-uploader/styles.css';
 import 'react-images-uploader/font.css';
 
+
 import {HTTP_SERVER_PORT_IMAGES} from '../server/constants';
 
 class CityLaconic extends React.Component {
@@ -13,7 +14,8 @@ class CityLaconic extends React.Component {
             <div className='card'>
                 <img src={this.props.cities.picture}/>
                 <Link to={`/city/${this.props.cities._id}`} activeClassName="active">{this.props.cities.name}</Link>
-            </div>
+                </div>
+
         )
     }
 };
@@ -215,7 +217,7 @@ class Header extends React.Component {
                         <a href="#">Home</a>
                         <a href="#">City</a>
                         <a href="#">About</a>
-                        <a href="#"><i className="fa fa-user"> </i>&#32;Login</a>
+                            <a href=""><i className="fa fa-user"> </i>&#32;Login</a>
 
                     </nav>
 

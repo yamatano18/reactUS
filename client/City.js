@@ -56,6 +56,7 @@ export default class City extends React.Component {
         } else {
 
             return (
+
                 <div className='city'>
                     <p>{this.state.city.name}</p>
                     <img src={this.state.city.picture}/>
@@ -63,8 +64,12 @@ export default class City extends React.Component {
                     <p>Element _Id: {this.state.city._id}</p>
                     <div className='map'>
                         <ul>
-                      <Map></Map>
+
+                            <li>Latitude:{this.state.city.coordinates.lat}</li>
+                            <li><p>Longitude:{this.state.city.coordinates.long}</p></li>
+                      <Map lat={this.state.city.coordinates.long} long={this.state.city.coordinates.lat}></Map>
                         </ul>
+
                     </div>
                     <div>
                         <div>
