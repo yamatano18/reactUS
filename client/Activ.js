@@ -62,7 +62,9 @@ class ActivFrom extends React.Component {
     }
 
 
+
 }
+
 
 export default class Activ extends React.Component {
     constructor(props) {
