@@ -10,6 +10,9 @@ import {SERVER, PORT, HTTP_SERVER_PORT, HTTP_SERVER_PORT_IMAGES, IMAGES} from '.
 
 const app = express();
 app.use(express.static(__dirname + '/../static'));
+app.use(bodyParser.urlencoded({
+    extended: true
+}));
 app.use(bodyParser.json());
 app.use(corsPrefetch);
 
@@ -97,7 +100,7 @@ app.get('/comments', function (req, res) {
 */
 
 /* POST */
-app.post('/cities/addCity', function (req, res) {
+app.post('/cities/addcity', function (req, res) {
     db.collection('cities').insertOne(req.body, (err, result) => {
         if(err)
             res.status(500).json({message: "error"});
@@ -148,6 +151,9 @@ app.post('/comments', (req, res) => {
             res.status(500).json({message: `Internal Server Error: ${error}`});
         });
 });
+
+app.post('/images', imagesUpload('./static/upload',HTTP_SERVER_PORT_IMAGES));
+
 /*
 app.post('/comment', (req, res) => {
     const update = {
