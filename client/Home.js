@@ -2,6 +2,7 @@ import React from 'react';
 import {Link} from 'react-router';
 import Container from './Container.js';
 import Footer from './Footer.js';
+import Modal from './Modal.js';
 
 import ImagesUploader from 'react-images-uploader';
 import 'react-images-uploader/styles.css';
@@ -31,11 +32,15 @@ export default class Home extends React.Component {
                 picture: '/images/Aix/festival1.jpg'
             },
                 {
-                _id : 1,
-                name: 'Le festival de canne',
-                picture: '/images/Aix/festival2.jpg'
-            }]
+                    _id : 1,
+                    name: 'Le festival de canne',
+                    picture: '/images/Aix/festival2.jpg'
+                }],
+            isOpen: false
         }
+        this.toggle = this.toggle.bind(this);
+        this.addCity = this.addCity.bind(this);
+
 
     };
 
@@ -46,26 +51,36 @@ export default class Home extends React.Component {
             .catch(err => console.log(err));               // Bad news: an error!
     }
 
-        addCity(e) {
-        e.preventDefault();
-        const cityName = this.state.name;
-        const cityLatitude = this.state.lat;
-        const cityLongitude = this.state.long;
-        const countryName = this.state.country;
+    toggle(e) {
+        this.setState({isOpen : !this.state.isOpen});
+    }
 
-        fetch('/cities/addCity', {
-            method: 'POST', headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({cityName, cityLatitude, cityLongitude, countryName})
-        }).then(res => {
-            if (res.ok) {
-                res.json().then(id => console.log("City added with id " + id));
-                this.loadData();
-            }
-            else
-                res.json().then(err => alert("Failed to add city: " + err.message));
-        }).catch(err => alert("Error in sending data to server: " + err.message));
+    addCity(event) {
+        event.preventDefault();
+        const data = new FormData(event.target);
 
-        this.setState({name: "", lat: null, long: null});
+        const city = {
+            name: data.get('name'),
+            coordinates: {
+                long: data.get('long'),
+                lat: data.get('lat')
+            },
+            activities:[],
+            picture: data.get('picturename'),
+            description:data.get('description')
+        }
+        console.log(city);
+        fetch('/cities/addcity', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json, text/plain, */*',
+                'Content-Type': 'application/json'
+            },
+            body: ("json", JSON.stringify( city )),
+        }).then(data => alert("Sucess"))
+            .catch(error => console.error(error));
+
+        this.loadData();
     }
 
     handleNameChange(e) {
@@ -114,13 +129,20 @@ export default class Home extends React.Component {
 
                     {mappedCities}
 
-                    <div className="col-md-12 boutton-violet">
-                        <button>Add your city</button>
+                    <div id="wrap" className="text-center">
+                        <br/>
+                        <button onClick={(e)=>this.toggle(e)} className="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
+                            ADD YOUR CITY
+                        </button>
                     </div>
+                    <Modal title="First Modal" isOpen={ this.state.isOpen} toggle={this.toggle}>
 
+                        <CityForm addCity = {this.addCity}/>
+
+                    </Modal>
                 </Container>
 
-                <CityForm/>
+
 
                 <Container nameClass="best-event" subTitle="Best event in the" colorTitle="world">
 
@@ -246,8 +268,8 @@ class BestPlace extends React.Component{
             <div className="col-md-4">
                 <div className="card">
                     <Link to={`/city/${this.props.cities._id}`}>
-                    <div className="card-img-top" style={ stylebg }>
-                    </div>
+                        <div className="card-img-top" style={ stylebg }>
+                        </div>
                     </Link>
                     <div className="card-body">
                         <h5 className="card-title"><strong>{this.props.cities.name}</strong></h5>
@@ -271,7 +293,7 @@ class BestEvent extends React.Component{
         }
 
         return(
-            <div className="col-md-12 best-event_content" style={stylebg}>
+            <div className="col-md-12 best-event_content">
 
                 <strong>{this.props.event.name}</strong>
 
@@ -319,40 +341,16 @@ class FeedBack extends React.Component{
 class CityForm extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {value: ''};
-
-        this.handleSubmit = this.handleSubmit.bind(this);
-    }
-
-    handleSubmit(event) {
-        event.preventDefault();
-        const data = new FormData(event.target);
-
-        const city = {
-            name: data.get('name'),
-            coordinates: {
-                long: data.get('long'),
-                lat: data.get('lat')
-            },
-            activities:[],
-            picture:this.state.picture,
-            description:data.get('description')
-        }
-        console.log(city);
-        fetch('/cities/addcity', {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json, text/plain, */*',
-                'Content-Type': 'application/json'
-            },
-            body: ("json", JSON.stringify( city )),
-        }).then(data => alert("Sucess"))
-            .catch(error => console.error(error));
+        this.state = {
+            cities: [],
+            isOpen : false
+        };
 
     }
+
     render() {
         return (
-            <form onSubmit={this.handleSubmit}>
+            <form onSubmit={this.props.addCity}>
                 <label htmlFor="name">City name</label>
                 <input id="name" name="name" type="text" />
 
@@ -361,7 +359,7 @@ class CityForm extends React.Component {
 
                 <label htmlFor="lat">Latitude</label>
                 <input id="lat" name="lat" type="text" />
-
+                <input type='hidden' name='picturename' id='picturename'/>
                 <textarea id="description" name="description" />
                 <ImagesUploader
                     url={"http://localhost:9090/images"}
@@ -371,7 +369,8 @@ class CityForm extends React.Component {
                         if (err)
                             console.error(err);
                         else
-                            this.setState({picture: result})
+                            document.getElementById('picturename').value = result;
+                        //this.setState({picture: result})
                     }}
                     label="Attach image"/>
                 <button>Add city</button>
