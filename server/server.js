@@ -80,40 +80,6 @@ app.post('/cities/addcity', function (req, res) {
     });
 });
 
-/*
-app.post('/activities/addactivity', (req, res) => {
-    db.collection('activities').insertOne(req.body, (error, result) => {
-        if (error)
-            res.status(400).json({message: `Internal Server Error: ${error}`});
-        else
-            res.status(200).json({message: `Success!`});
-    });
-});
-*/
-
-app.post('/comments', (req, res) => {
-    const update = {
-        comments: {
-            user: {
-                _id: ObjectID(req.body.userId),
-                email: req.body.email
-            },
-            date: new Date(),
-            text: req.body.text
-        }
-    }
-    if(req.body.type === undefined)
-        res.status(500).json({message: `Internal Server Error: ${error}`});
-    db.collection(req.body.type).updateOne({
-        _id: ObjectID(req.body.parentId)
-    }, {
-        $push: update
-    }).then(res.status(200).json({message: `Success`}))
-        .catch(error => {
-            res.status(500).json({message: `Internal Server Error: ${error}`});
-        });
-});
-
 app.route('/activities/addactivity')
     .get((req, res) => {
         db.collection('activities').find().toArray()
@@ -134,5 +100,26 @@ app.route('/activities/addactivity')
                 res.status(500).json({message: `Internal Server Error: ${error}`});
             });
     });
+
+app.post('/comments', (req, res) => {
+    const update = {
+        comments: {
+            user: {
+                _id: ObjectID(req.body.userId),
+                email: req.body.email
+            },
+            date: new Date(),
+            text: req.body.text
+        }
+    }
+    if(req.body.type === undefined)
+        res.status(500).json({message: `Internal Server Error`});
+    db.collection(req.body.type).updateOne({
+        _id: ObjectID(req.body.parentId)
+    }, {$push: update}).then(res.status(200).json({message: `Success`}))
+        .catch(error => {
+            res.status(500).json({message: `Internal Server Error`});
+        });
+})
 
 app.post('/images', imagesUpload('./static/upload',HTTP_SERVER_PORT_IMAGES));

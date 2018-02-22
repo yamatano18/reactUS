@@ -205,7 +205,7 @@ class ActivityForm extends React.Component {
             description: data.get('description')
         }
         activity.picture.shift();
-        JSON.stringify(activity.picture);
+        JSON.stringify(<activity className="picture"></activity>);
         console.log(activity);
         fetch('/activities/addactivity', {
             method: 'POST',
