@@ -339,7 +339,7 @@ class CityForm extends React.Component {
             description:data.get('description')
         }
         console.log(city);
-        fetch('/api/cities', {
+        fetch('/cities/addcity', {
             method: 'POST',
             headers: {
                 'Accept': 'application/json, text/plain, */*',
