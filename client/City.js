@@ -41,7 +41,7 @@ class Activity extends React.Component {
     render() {
         return (
             <div className='activityClass'>
-                <img src={this.props.activity.picture} height="200" width="auto"/>
+                <img src={this.props.activity.pictures} height="200" width="auto"/>
                 <p>{this.props.activity.name}</p>
             </div>
         )
@@ -53,7 +53,6 @@ export default class City extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            pictures: [],
             isOpen: false
         }
         this.toggle = this.toggle.bind(this);
@@ -202,9 +201,11 @@ class ActivityForm extends React.Component {
             dateStart: data.get('startDate'),
             dateEnd: data.get('endDate'),
             comments: [],
-            pictures: this.state.pictures,
+            picture: this.state.pictures,
             description: data.get('description')
         }
+        activity.picture.shift();
+        JSON.stringify(activity.picture);
         console.log(activity);
         fetch('/activities/addactivity', {
             method: 'POST',

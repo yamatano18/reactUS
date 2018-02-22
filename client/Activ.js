@@ -6,7 +6,7 @@ import 'react-images-uploader/styles.css';
 import 'react-images-uploader/font.css';
 import Modal from './Modal.js';
 import {HTTP_SERVER_PORT_IMAGES} from '../server/constants'
-
+import City from "./City";
 
 class Comment extends React.Component {
     render(){
@@ -61,8 +61,6 @@ class ActivFrom extends React.Component {
         );
     }
 
-
-
 }
 
 
@@ -71,6 +69,7 @@ export default class Activ extends React.Component {
         super(props);
         this.state = {
             activity: void 0,
+            city: void 0,
             isOpen:false
 
         };
@@ -79,16 +78,19 @@ export default class Activ extends React.Component {
 
     loadData() {
 
-        fetch('/activity/'+this.props.params.id)                       // Ask the route /cities to the server
+        fetch('/activity/' + this.props.params.id)                       // Ask the route /cities to the server
             .then(res => res.json())                       // Retrieve the objects  in json
             .then(data => this.setState({activity: data}))   // Modify the state accordingly
             .catch(err => console.log(err));               // Bad news: an error!
-
     }
 
     componentDidMount() {
         this.loadData();
-    }
+        return fetch('/city/' + this.props.params.id)                        // Ask the route /cities to the server
+            .then(res => res.json())                                       // Retrieve the objects  in json
+            .then(data => this.setState({isLoading: false, city: data}))   // Modify the state accordingly
+            .catch(err => console.log(err));
+        }
 
     toggle(){
         this.setState({isOpen: !this.state.isOpen});
@@ -97,7 +99,7 @@ export default class Activ extends React.Component {
     render() {
         let activity = this.state.activity;
         if(activity == undefined){
-            return ( <div>loading data from DB</div>)
+            return ( <dv>loading data from DBase</dv>)
         }
         else {
             return (
