@@ -123,8 +123,8 @@ var boulogne = {
     _id: ObjectId(),
     name: 'Boulogne sur mer',
     coordinates: {
-        long: "50.7264",
-        lat: "1.6147"
+        lat: "50.7264",
+        long: "1.6147"
     },
     description: "",
     picture: '/images/Boulogne/centre.jpg',

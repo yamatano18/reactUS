@@ -1,5 +1,8 @@
 import React from 'react';
 import {Link} from 'react-router';
+import Container from './Container.js';
+import Footer from './Footer.js';
+import Modal from './Modal.js';
 
 import ImagesUploader from 'react-images-uploader';
 import 'react-images-uploader/styles.css';
@@ -29,11 +32,15 @@ export default class Home extends React.Component {
                 picture: '/images/Aix/festival1.jpg'
             },
                 {
-                _id : 1,
-                name: 'Le festival de BD',
-                picture: '/images/Aix/festival1.jpg'
-            }]
+                    _id : 1,
+                    name: 'Le festival de canne',
+                    picture: '/images/Aix/festival2.jpg'
+                }],
+            isOpen: false
         }
+        this.toggle = this.toggle.bind(this);
+        this.addCity = this.addCity.bind(this);
+
 
     };
 
@@ -44,6 +51,53 @@ export default class Home extends React.Component {
             .catch(err => console.log(err));               // Bad news: an error!
     }
 
+    toggle(e) {
+        this.setState({isOpen : !this.state.isOpen});
+    }
+
+    addCity(event) {
+        event.preventDefault();
+        const data = new FormData(event.target);
+
+        const city = {
+            name: data.get('name'),
+            coordinates: {
+                long: data.get('long'),
+                lat: data.get('lat')
+            },
+            activities:[],
+            picture: data.get('picturename'),
+            description:data.get('description')
+        }
+        console.log(city);
+        fetch('/cities/addcity', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json, text/plain, */*',
+                'Content-Type': 'application/json'
+            },
+            body: ("json", JSON.stringify( city )),
+        }).then(data => alert("Sucess"))
+            .catch(error => console.error(error));
+
+        this.loadData();
+    }
+
+    handleNameChange(e) {
+        this.setState({name: e.target.value});
+    }
+
+    handleLatChange(e) {
+        this.setState({lat: e.target.value});
+    }
+
+    handleLongChange(e) {
+        this.setState({long: e.target.value});
+    }
+
+    handleCountryChange(e) {
+        this.setState({country: e.target.value});
+    }
 
     componentDidMount() {
         this.loadData();
@@ -68,17 +122,38 @@ export default class Home extends React.Component {
         const mappedCities = this.state.cities.map(p => <BestPlace cities={p}/>)
         return (
             <div>
+
                 <Header title="WORDLWIDE"/>
 
                 <Container nameClass="city" subTitle="The place to be in the" colorTitle="world">
 
                     {mappedCities}
 
+                    <div id="wrap" className="text-center">
+                        <br/>
+                        <div className="col-md-12 boutton-violet">
+                            <button onClick={(e)=>this.toggle(e)} className="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
+                                ADD YOUR CITY
+                            </button>
+                        </div>
+
+                    </div>
+                    <Modal title="First Modal" isOpen={ this.state.isOpen} toggle={this.toggle}>
+
+                        <CityForm addCity = {this.addCity}/>
+
+                    </Modal>
                 </Container>
+
+
 
                 <Container nameClass="best-event" subTitle="Best event in the" colorTitle="world">
 
                     {this.state.events.map((e,i) => <BestEvent key={i} event={e} />)}
+
+                    <div className="col-md-12 boutton-violet">
+                        <button>See more</button>
+                    </div>
 
                 </Container>
 
@@ -123,49 +198,41 @@ export default class Home extends React.Component {
 
                 </Container>
 
+                <Footer/>
+
             </div>
         );
-    }
-
-};
-
-class Container extends React.Component {
-    render(){
-        return(
-            <section className={this.props.nameClass}>
-
-                <div className="container">
-
-                    <h2>{this.props.subTitle}<mark>{this.props.colorTitle}</mark></h2>
-
-                    <div className="row">
-
-                        {this.props.children}
-
-                    </div>
-
-                </div>
-
-            </section>
-        )
     }
 };
 
 class Header extends React.Component {
     render() {
+
+        var bgHeader = {
+            backgroundImage : "url('images/figures/background.jpg')"
+        }
+
         return(
 
-            <header className="header">
+            <header className="header" style={ bgHeader }>
 
                 <img className="fly-bg" src="images/figures/fly-bg.png" alt=""/>
 
                 <section className="pre-header">
 
-                    <strong><img src="images/figures/logo-white.png" alt="logo"/>&#32;{this.props.title}</strong>
+                    <strong><a href="/"><img src="images/figures/logo-white.png" alt="logo"/>&#32;WorldWide</a></strong>
+
+                    <input id="burger" type="checkbox" className="hamburger"/>
+
+                    <label htmlFor="burger">
+                        <span> </span>
+                        <span> </span>
+                        <span> </span>
+                    </label>
 
                     <nav className="navbar">
 
-                        <a href="#">Home</a>
+                        <a href="/" className="active">Home</a>
                         <a href="#">City</a>
                         <a href="#">About</a>
                         <a href="#"><i className="fa fa-user"> </i>&#32;Login</a>
@@ -194,17 +261,22 @@ class Header extends React.Component {
 
 class BestPlace extends React.Component{
     render(){
+
+        var stylebg = {
+            backgroundImage : "url("+this.props.cities.picture+")"
+        }
+
+
         return(
             <div className="col-md-4">
                 <div className="card">
-                    <div className="card-img-top" style={this.props.picture}>
-                        <Link to={`/city/${this.props.cities._id}`}>
-                            <img src={this.props.cities.picture}  />
-                        </Link>
-                    </div>
+                    <Link to={`/city/${this.props.cities._id}`}>
+                        <div className="card-img-top" style={ stylebg }>
+                        </div>
+                    </Link>
                     <div className="card-body">
-                        <h5 className="card-title"><strong>{this.props.name}</strong></h5>
-                        <p className="card-text">{this.props.cities.name}</p>
+                        <h5 className="card-title"><strong>{this.props.cities.name}</strong></h5>
+                        <p className="card-text">{this.props.cities.description}</p>
                         <ul>
                             <li><i className="fa fa-heart"> </i>&#32;{this.props.cities.likers}</li>
                             <li><i className="fa fa-comment"> </i>&#32;{this.props.commentNb}</li>
@@ -218,6 +290,10 @@ class BestPlace extends React.Component{
 
 class BestEvent extends React.Component{
     render(){
+
+        var stylebg = {
+            backgroundImage : "url("+this.props.event.picture+")"
+        }
 
         return(
             <div className="col-md-12 best-event_content">
@@ -263,3 +339,53 @@ class FeedBack extends React.Component{
         )
     }
 };
+
+
+class CityForm extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            cities: [],
+            isOpen : false
+        };
+
+    }
+
+    render() {
+        return (
+            <form onSubmit={this.props.addCity}>
+
+                <div className="form-group">
+                    <label htmlFor="name">City name</label>
+                    <input id="name" className="form-control" name="name" type="text" placeholder="Enter the city name" required="required"/>
+
+                    <label htmlFor="long">Longitude</label>
+                    <input id="long" className="form-control" name="long" type="text" placeholder="Enter the longitude" />
+
+                    <label htmlFor="lat">Latitude</label>
+                    <input id="lat" name="lat" className="form-control" type="text" placeholder="Enter the latitude" />
+
+                    <input type='hidden' className="form-control" name='picturename' id='picturename' required="required"/>
+
+                    <label for="description">Description</label>
+                    <textarea className="form-control" id="description" name="description" rows="3" placeholder="Enter the description of the city"></textarea>
+
+                    <ImagesUploader
+                        url={"http://localhost:9090/images"}
+                        optimisticPreviews={true}
+                        multiple={false}
+                        onLoadEnd={(err, result) =>{
+                            if (err)
+                                console.error(err);
+                            else
+                                document.getElementById('picturename').value = result;
+                            //this.setState({picture: result})
+                        }}
+                        label="Ajouter une image"/>
+
+                <button>Add city</button>
+                </div>
+            </form>
+        );
+    }
+}
