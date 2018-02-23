@@ -1,53 +1,34 @@
-import React, {PropTypes,Component} from 'react';
+import React, {Component} from 'react';
 import GoogleMapReact from 'google-map-react';
-import {greatPlaceStyle} from './mapstyle.js';
 
-class Marker extends React.Component {
-    constructor(props) {
-        super();
-    }
+const AnyReactComponent = ({text}) => <div>{text}</div>;
 
-
-    render() {
-        return (
-            <div style={greatPlaceStyle}>
-                {this.props.text}
-            </div>
-        );
-    }
-}
 export default class Map extends Component {
 
     constructor(props) {
         super();
-
+        this.state = {
+            markers: [{
+                position: {
+                    lat: 25,
+                    lng: 121,
+                }
+            }]
+        }
     }
 
-
-    render()
-    {
+    render() {
         const style = {
             width: '10%',
             height: '10%'
         };
 
-
-
-        const obj ={
-            lat:parseFloat(this.props.lat),
-            lng:parseFloat(this.props.long)
-        }
-        const onClickMarker =(<div>this is a marker</div>);
-        //console.log(obj);
         return (
-
-            <div style={{height: 400, width: 500}}>
+            <div style={{height: 400, marginBottom: 40}} className="col-md-12">
                 <GoogleMapReact styles={{height: 10, width: 10}}
                                 bootstrapURLKeys={{key: ['AIzaSyAVo0Woy8NwYN07-8Zpz5cq2tVzi4WPtEI']}}
-                                defaultCenter={obj}
+                                defaultCenter={this.props.center}
                                 defaultZoom={this.props.zoom}>
-                    <Marker lat={this.props.lat} lng={this.props.long} onClick={{onClickMarker}}text={'@'}/>
-
                 </GoogleMapReact>
 
             </div>
@@ -57,6 +38,5 @@ export default class Map extends Component {
 }
 
 Map.defaultProps = {
-    center: {lat:111, lng: 30.33},
-    zoom: 13,
+    zoom: 10,
 };

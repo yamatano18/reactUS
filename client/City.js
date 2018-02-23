@@ -7,6 +7,7 @@ import 'react-images-uploader/styles.css';
 import 'react-images-uploader/font.css';
 import Map from './Map.js';
 import Modal from './Modal.js';
+import scrollToComponent from 'react-scroll-to-component';
 
 const AnyReactComponent = ({text}) => <div>{text}</div>;
 
@@ -28,21 +29,9 @@ class Place extends React.Component {
                     </Link>
                     <div className="card-body">
                         <h5 className="card-title"><strong>{this.props.activity.name}</strong></h5>
-                        <p className="card-text">1</p>
+                        <p className="card-text">{this.props.activity.description}</p>
                     </div>
                 </div>
-            </div>
-        )
-    }
-};
-
-class Activity extends React.Component {
-
-    render() {
-        return (
-            <div className='activityClass'>
-                <img src={this.props.activity.pictures} height="200" width="auto"/>
-                <p>{this.props.activity.name}</p>
             </div>
         )
     }
@@ -77,17 +66,15 @@ export default class City extends React.Component {
             var bgHeader = {
                 backgroundImage: "url(" + this.state.city.picture + ")"
             };
-            let _url = `https://maps.google.com/maps?q=${this.state.city.coordinates.lat},${this.state.city.coordinates.long}&hl=es;z=14&amp;output=embed`;
+            let c = {lat : parseFloat(this.state.city.coordinates.lat), lng: parseFloat(this.state.city.coordinates.long)};
 
-            {
-                console.log("jed=" + this.state.city.cityId)
+            let marginbotom = {
+                marginBottom : 40
             }
             return (
 
                 <div>
                     <header className="header" style={bgHeader}>
-
-                        <img className="fly-bg" src="images/figures/fly-bg.png" alt=""/>
 
                         <section className="pre-header">
 
@@ -105,7 +92,6 @@ export default class City extends React.Component {
 
                                 <a href="/">Home</a>
                                 <a href="#" className="active">City</a>
-                                <a href="#">About</a>
                                 <a href="#"><i className="fa fa-user"> </i>&#32;Login</a>
 
                             </nav>
@@ -118,7 +104,7 @@ export default class City extends React.Component {
 
                             <small>{this.state.city.description}</small>
 
-                            <button>SEE MORE</button>
+                            <button  onClick={() => scrollToComponent(this.sectionPlaces, { offset: 0, align: 'top', duration: 1500})}>SEE MORE</button>
 
                         </div>
 
@@ -127,48 +113,43 @@ export default class City extends React.Component {
                     <div>
                         <div>
 
-                            <Container nameClass="city" subTitle="Best places in" colorTitle={this.state.city.name}
-                                       logo="images/figures/map.png">
+                            <section ref={(section) => { this.sectionPlaces = section; }}>
 
-                                {this.state.city.activities.filter(a => (a.nature == 'place')).map((a, i) => <Place
-                                    activity={a}/>)}
+                                <Container nameClass="city" subTitle="Best places in" colorTitle={this.state.city.name}>
 
-                                <div className="col-md-12 boutton-violet">
-                                    <button>Add place</button>
-                                </div>
+                                    {this.state.city.activities.filter(a => a.nature == 'place').map((a, i) => <Place
+                                        activity={a}/>)}
 
-                            </Container>
+                                </Container>
+
+                            </section>
 
 
-                            <Container nameClass="city" subTitle="Best event in" colorTitle={this.state.city.name}
-                                       logo="images/figures/event.png">
+                            <Container nameClass="city" subTitle="Best event in" colorTitle={this.state.city.name}>
 
                                 {this.state.city.activities.filter(a => a.nature == 'event').map((a, i) => <Place
                                     activity={a}/>)}
 
-                                <div className="col-md-12 boutton-violet">
-                                    <button onClick={(e) => this.toggle(e)} className="btn btn-primary btn-lg"
-                                            data-toggle="modal" data-target="#myModal">
-                                        ADD YOUR ACTIVITY
-                                    </button>
-                                </div>
+                            </Container>
+
+                            <Container colorTitle="Localisation" logo="images/figures/map.png">
+
+                                <Map center={c}/>
 
                             </Container>
-                            <div class="col-md-12 boutton-violet">
 
-                            </div>
                             <Modal title="First Modal" isOpen={this.state.isOpen} toggle={this.toggle}>
                                 <ActivityForm cityId={this.state.city._id}/>
                             </Modal>
 
-                            <Container colorTitle="Localisation" logo="images/figures/map.png">
-
-                                <Map lat={this.state.city.coordinates.long}
-                                     long={this.state.city.coordinates.lat}></Map>
-                            </Container>
-
-
                         </div>
+                    </div>
+
+                    <div className="col-md-12 boutton-violet" style={marginbotom}>
+                        <button onClick={(e) => this.toggle(e)} className=""
+                                data-toggle="modal" data-target="#myModal">
+                            ADD YOUR ACTIVITY
+                        </button>
                     </div>
 
                     <Footer/>
@@ -214,8 +195,7 @@ class ActivityForm extends React.Component {
                 'Content-Type': 'application/json'
             },
             body: ("json", JSON.stringify(activity)),
-        }).then(data => alert("Sucess"))
-            .catch(error => console.error(error));
+        });
 
     }
 

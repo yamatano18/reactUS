@@ -3,6 +3,7 @@ import {Link} from 'react-router';
 import Container from './Container.js';
 import Footer from './Footer.js';
 import Modal from './Modal.js';
+import scrollToComponent from 'react-scroll-to-component';
 
 import ImagesUploader from 'react-images-uploader';
 import 'react-images-uploader/styles.css';
@@ -119,11 +120,57 @@ export default class Home extends React.Component {
     // }
 
     render() {
-        const mappedCities = this.state.cities.map(p => <BestPlace cities={p}/>)
+        const mappedCities = this.state.cities.map(p => <BestPlace cities={p}/>);
+        var bgHeader = {
+            backgroundImage : "url('images/figures/background.jpg')"
+        }
+        var nobg = {
+            backgroundColor : "inherit"
+        }
         return (
             <div>
 
-                <Header title="WORDLWIDE"/>
+                <header className="header" style={ bgHeader }>
+
+                    <img className="fly-bg" src="images/figures/fly-bg.png" alt=""/>
+
+                    <section className="pre-header">
+
+                        <strong><a href="/"><img src="images/figures/logo-white.png" alt="logo"/>&#32;WorldWide</a></strong>
+
+                        <input id="burger" type="checkbox" className="hamburger"/>
+
+                        <label htmlFor="burger">
+                            <span> </span>
+                            <span> </span>
+                            <span> </span>
+                        </label>
+
+                        <nav className="navbar">
+
+                            <a href="/" className="active">Home</a>
+                            <a href="#" onClick={() => scrollToComponent(this.sectionCity, { offset: 0, align: 'top', duration: 1500})}>City</a>
+                            <a href="#" onClick={() => scrollToComponent(this.sectionAbout, { offset: 0, align: 'top', duration: 1500})}>About</a>
+                            <a href="#" ><i className="fa fa-user"> </i>&#32;Login</a>
+
+                        </nav>
+
+                    </section>
+
+                    <div className="container">
+
+                        <strong>DISCOVER THE WORLD WITH WORLDWIDE</strong>
+
+                        <small style={nobg}>A website where you can find a lot of cities and different event. If you are lose, you are at the good place because here you can find your path!
+                        </small>
+
+                        <button onClick={() => scrollToComponent(this.sectionCity, { offset: 0, align: 'top', duration: 1500})}>SEE CITIES</button>
+
+                    </div>
+
+                </header>
+
+                <section ref={(section) => { this.sectionCity = section; }}>
 
                 <Container nameClass="city" subTitle="The place to be in the" colorTitle="world">
 
@@ -132,7 +179,7 @@ export default class Home extends React.Component {
                     <div id="wrap" className="text-center">
                         <br/>
                         <div className="col-md-12 boutton-violet">
-                            <button onClick={(e)=>this.toggle(e)} className="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
+                            <button onClick={(e)=>this.toggle(e)} data-toggle="modal" data-target="#myModal">
                                 ADD YOUR CITY
                             </button>
                         </div>
@@ -145,6 +192,7 @@ export default class Home extends React.Component {
                     </Modal>
                 </Container>
 
+                </section>
 
 
                 <Container nameClass="best-event" subTitle="Best event in the" colorTitle="world">
@@ -156,6 +204,8 @@ export default class Home extends React.Component {
                     </div>
 
                 </Container>
+
+                <section ref={(section) => { this.sectionAbout = section; }}>
 
                 <Container nameClass="howitwork" colorTitle="How it works ?">
 
@@ -179,21 +229,26 @@ export default class Home extends React.Component {
 
                 </Container>
 
+                </section>
+
                 <Container nameClass="feedbackSection" colorTitle="Feedback">
 
                     <FeedBack
-                        name="Martin.M"
+                        photo="images/figures/louison.png"
+                        name="Louison.M"
                         description="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt."
                     />
 
                     <FeedBack
-                        name="Martin.M"
+                        photo="images/figures/kylian.png"
+                        name="Kylian.T"
                         description="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt."
                     />
 
                     <FeedBack
-                        name="Martin.M"
-                        description="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt."
+                        photo="images/figures/adam.png"
+                        name="Adam.W"
+                        description="Lorem dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt."
                     />
 
                 </Container>
@@ -205,59 +260,6 @@ export default class Home extends React.Component {
     }
 };
 
-class Header extends React.Component {
-    render() {
-
-        var bgHeader = {
-            backgroundImage : "url('images/figures/background.jpg')"
-        }
-
-        return(
-
-            <header className="header" style={ bgHeader }>
-
-                <img className="fly-bg" src="images/figures/fly-bg.png" alt=""/>
-
-                <section className="pre-header">
-
-                    <strong><a href="/"><img src="images/figures/logo-white.png" alt="logo"/>&#32;WorldWide</a></strong>
-
-                    <input id="burger" type="checkbox" className="hamburger"/>
-
-                    <label htmlFor="burger">
-                        <span> </span>
-                        <span> </span>
-                        <span> </span>
-                    </label>
-
-                    <nav className="navbar">
-
-                        <a href="/" className="active">Home</a>
-                        <a href="#">City</a>
-                        <a href="#">About</a>
-                        <a href="#"><i className="fa fa-user"> </i>&#32;Login</a>
-
-                    </nav>
-
-                </section>
-
-                <div className="container">
-
-                    <strong>DISCOVER THE WORLD WITH {this.props.title}</strong>
-
-                    <small>Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-                        sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                    </small>
-
-                    <button>SEE CITIES</button>
-
-                </div>
-
-            </header>
-
-        )
-    }
-};
 
 class BestPlace extends React.Component{
     render(){
@@ -296,7 +298,7 @@ class BestEvent extends React.Component{
         }
 
         return(
-            <div className="col-md-12 best-event_content">
+            <div className="col-md-12 best-event_content" style={stylebg}>
 
                 <strong>{this.props.event.name}</strong>
 
@@ -328,7 +330,7 @@ class FeedBack extends React.Component{
 
                 <div className="carte">
 
-                    <img src="images/figures/default.jpg" alt="logo" />
+                    <img src={this.props.photo} alt="logo" />
                     <h6 className="feedbackTitle">{this.props.name}</h6>
                     <p>{this.props.description}</p>
 

@@ -1,5 +1,7 @@
 import React from 'react';
 import {Link} from 'react-router';
+import Container from './Container.js';
+import Footer from './Footer.js';
 
 import ImagesUploader from 'react-images-uploader';
 import 'react-images-uploader/styles.css';
@@ -10,23 +12,25 @@ import City from "./City";
 
 class Comment extends React.Component {
     render(){
+        var bar = {
+            borderTop : "2px solid grey",
+            padding: "30px 0"
+        }
         const d = new Date(this.props.comm.date);
         const today = new Date();
         return(
-            <div className='comment'>
+            <div className='comment col-md-12' style={bar}>
+                <div className="col-md-12 title-comment">
                 <p>{this.props.comm.user.email}</p>
-                <p>{this.props.comm.text}</p>
-                <p>{d.getFullYear()}, {d.getMonth()+1}, {d.getDate() }</p>
-            </div>
-        )
-    }
-}
+                </div>
 
-class Picture extends React.Component {
-    render(){
-        return(
-            <div className='picture'>
-                <img src= {this.props.picture} width="150px" height="150px"/>
+                <div className="col-md-12 comment">
+                <p>{this.props.comm.text}</p>
+                </div>
+
+                <div className="col-md-12 date-comment">
+                <p>{d.getFullYear()}, {d.getMonth()+1}, {d.getDate() }</p>
+                </div>
             </div>
         )
     }
@@ -63,10 +67,17 @@ class ActivFrom extends React.Component {
     render() {
         return (
             <form onSubmit={this.handleSubmit}>
-                <label htmlFor="long">Email</label>
-                <input id="email" name="email" type="email" />
-                <textarea id="text" name="text" />
-                <button>Share</button>
+            <div className="form-group" >
+                <label htmlFor="name">Name</label>
+                <input id="email" className="form-control" name="email" type="text" placeholder="Enter your name" required="required"/>
+
+                <label htmlFor="name">Comment</label>
+                <input id="text" className="form-control" name="text" type="text" placeholder="Enter your comment" required="required"/>
+
+                <div className="boutton-violet">
+                <button>Comment</button>
+                </div>
+            </div>
             </form>
         );
     }
@@ -110,17 +121,66 @@ export default class Activ extends React.Component {
         if(activity == undefined){
             return ( <dv>loading data from DBase</dv>)
         }
-        else {
+        else {var bgHeader = {
+            backgroundImage: "url(" + this.state.activity.pictures[0] + ")"
+        };
             return (
-                <div className='activity'>
-                    {this.state.activity.picture.map((a,i) => <Picture picture={a}/> )}
-                    <p>{this.state.activity.name}</p>
-                    <p>{this.state.activity.description}</p>
-                    <p><a id="open" onClick={(e)=>this.toggle(e)}><button>Add your comment</button></a></p>
+                <div>
+                    <header className="header" style={bgHeader}>
+
+                        <section className="pre-header">
+
+                            <strong><a href="/"><img src="images/figures/logo-white.png" alt="logo"/>&#32;WorldWide</a></strong>
+
+                            <input id="burger" type="checkbox" className="hamburger"/>
+
+                            <label htmlFor="burger">
+                                <span> </span>
+                                <span> </span>
+                                <span> </span>
+                            </label>
+
+                            <nav className="navbar">
+
+                                <a href="/">Home</a>
+                                <a href="#"><i className="fa fa-user"> </i>&#32;Login</a>
+
+                            </nav>
+
+                        </section>
+
+                        <div className="container">
+
+                            <strong>{this.state.activity.name}</strong>
+
+                            <button  onClick={() => scrollToComponent(this.sectionAct, { offset: 0, align: 'top', duration: 1500})}>SEE MORE</button>
+
+                        </div>
+
+                    </header>
+
+                    <section ref={(section) => { this.sectionAbout = section; }}>
+
+                        <Container nameClass="city" colorTitle={this.state.activity.name}>
+
+                            <p className='para col-md-12'>{this.state.activity.description}</p>
+
+                        </Container>
+
+                        <Container colorTitle="Comment">
+
+                            {this.state.activity.comments.map((a,i) => <Comment comm={a}/> )}
+
+                        </Container>
+
+                    <p className="boutton-violet"><a id="open" onClick={(e)=>this.toggle(e)}><button>Add your comment</button></a></p>
                     <Modal isOpen={this.state.isOpen} toggle={this.toggle}>
                         <ActivFrom type="activities" parent={this.state.activity._id}/>
                     </Modal>
-                    {this.state.activity.comments.map((a,i) => <Comment comm={a}/> )}
+
+                    </section>
+
+                    <Footer/>
 
                 </div>
             )

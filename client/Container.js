@@ -11,10 +11,6 @@ class Container extends React.Component {
 
                 <div className="container">
 
-                    <div className="col-md-12 logo-content" >
-                        <img src={this.props.logo} alt=""/>
-                    </div>
-
                     <h2>{this.props.subTitle}<mark>{this.props.colorTitle}</mark></h2>
 
                     <div className="row">
